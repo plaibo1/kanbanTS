@@ -111,9 +111,7 @@ const ScramApp: FC = () => {
         {/* === drop area for column === */}
         <StrictModeDroppable droppableId='columnsDroppableArea' direction='horizontal' type='column'>
 
-          {(provided) => {
-
-            console.log(provided.placeholder)
+          {(provided, snapshot) => {
 
             return (
               <div
@@ -128,12 +126,14 @@ const ScramApp: FC = () => {
                   })
                 }
 
-                <div>
-                  <div className='bg-slate-100 dark:bg-slate-800 dark:shadow-2xl rounded-xl w-[94%] mx-auto shadow-sm overflow-hidden'>
-                    <div className='w-full bg-slate-200 dark:bg-inherit dark:border-b-slate-900 dark:border-b h-12 -mb-12'></div>
+                {
+                  snapshot.isUsingPlaceholder && <div>
+                  <div className='border-2 dark:border-slate-700 border-dashed rounded-xl w-[93%] mx-auto'>
                     {provided.placeholder}
                   </div>
                 </div>
+                }
+                
               </div>
             )
           }}
