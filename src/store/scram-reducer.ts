@@ -14,6 +14,7 @@ export interface ColumnObjectType {
   id: string, 
   title:string,  
   taskIds:Array<string>
+  isTitleEdit: boolean
 }
 
 export interface ColumnType {
@@ -33,16 +34,19 @@ const initialState:initialStateScramAppType = {
     'column-1': {
       id: 'column-1',
       title: 'To do',
+      isTitleEdit: false,
       taskIds: [],
     },
     'column-2': {
       id: 'column-2',
       title: 'Doing',
+      isTitleEdit: false,
       taskIds: [],
     },
     'column-3': {
       id: 'column-3',
       title: 'Done',
+      isTitleEdit: false,
       taskIds: [],
     },
   },
@@ -72,15 +76,32 @@ const scramSlice = createSlice({
       state.columns[id] = {
         id,
         title: action.payload,
-        taskIds: []
+        taskIds: [],
+        isTitleEdit: false
       }
       state.columnOrder.push(id)
-    }
+    },
+
+    removeColumnScram(state, action:PayloadAction<string>) {
+      const indexOfColumn = state.columnOrder.indexOf(action.payload)
+      state.columnOrder.splice(indexOfColumn, 1)
+
+      delete state.columns[action.payload]
+    },
+
+    startEditColumnNameScramApp(state, action:PayloadAction<string>) {
+      state.columns[action.payload].isTitleEdit = !state.columns[action.payload].isTitleEdit
+    },
+
+    saveColumnNameScramApp(state, action:PayloadAction<{columnID:string, title:string}>) {
+      state.columns[action.payload.columnID].title = action.payload.title
+    },
+    
 
   }
 })
 
-export const {setScram, addTaskScram, addColumnScram} = scramSlice.actions;
+export const {setScram, addTaskScram, addColumnScram, removeColumnScram, saveColumnNameScramApp, startEditColumnNameScramApp} = scramSlice.actions;
 
 export type scramReducerActionsTypes = typeof scramSlice.actions;
 

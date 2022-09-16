@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useAppDispatch, useAppSelector } from '../../hook';
 import { initialStateScramAppType, setScram } from '../../store/scram-reducer';
-import AddColumnBtn from './AddColumnBtn/AddColumnBtn';
+import AddColumnBtn from './ColumnBtn/AddColumnBtn';
 import ColumnWrapper from './Column/ColumnWrapper';
 import { StrictModeDroppable } from './StrictModeDroppable';
 
@@ -112,12 +112,12 @@ const ScramApp: FC = () => {
         <StrictModeDroppable droppableId='columnsDroppableArea' direction='horizontal' type='column'>
 
           {(provided, snapshot) => {
-
             return (
               <div
                 className='scramScroll'
                 ref={provided.innerRef} {...provided.droppableProps}
               >
+
                 {
                   initialData.columnOrder.map((columnId: string, columnIndex: number) => {
                     const column = initialData.columns[columnId]
@@ -127,11 +127,12 @@ const ScramApp: FC = () => {
                 }
 
                 {
-                  snapshot.isUsingPlaceholder && <div>
-                  <div className='border-2 dark:border-slate-700 border-dashed rounded-xl w-[93%] mx-auto'>
-                    {provided.placeholder}
+                  snapshot.isUsingPlaceholder && 
+                  <div>
+                    <div className='border-2 dark:border-slate-700 border-dashed rounded-xl w-[93%] mx-auto'>
+                      {provided.placeholder}
+                    </div>
                   </div>
-                </div>
                 }
                 
               </div>

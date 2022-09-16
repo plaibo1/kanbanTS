@@ -1,7 +1,7 @@
-import {FC} from 'react'
+import {FC, useState} from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { useAppDispatch } from '../../../hook'
-import { addTaskScram, ColumnObjectType, initialStateScramAppType, TaskObjectType } from '../../../store/scram-reducer'
+import { addTaskScram, ColumnObjectType, removeColumnScram, saveColumnNameScramApp, startEditColumnNameScramApp, TaskObjectType } from '../../../store/scram-reducer'
 import { StrictModeDroppable } from '../StrictModeDroppable'
 import TaskWrapper from '../Task/TaskWrapper'
 
@@ -22,13 +22,28 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
     dispatch(addTaskScram({content, columnID}))
   }
 
+  const removeColumn = (columnID: string) => {
+    dispatch(removeColumnScram(columnID))
+  }
+
+  const startEditColumnName = (columnID:string) => {
+    dispatch(startEditColumnNameScramApp(columnID))
+  }
+
+  const saveColumnName = (columnID:string, columnName:string) => {
+    dispatch(saveColumnNameScramApp({columnID, title:columnName}))
+    dispatch(startEditColumnNameScramApp(columnID))
+  }
+
+  const [columnName, setColumnName] = useState('')
+
   return (
     <Draggable draggableId={column.id} index={columnIndex}>
     {
       ((provided) => (
         <div
-          className='bg-white dark:bg-slate-700 w-[400px] 
-            min-w-[400px] mx-3 inline-block rounded-xl relative shadow-sm'
+          className='bg-white dark:bg-slate-700 min-w-[320px] sm:min-w-[350px] xl:min-w-[400px]
+            mx-3 inline-block rounded-xl relative shadow-sm'
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
@@ -38,8 +53,34 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
               font-semibold mb-3 py-3 pl-3 border-b dark:border-slate-600' 
             {...provided.dragHandleProps}
           >
-            {column.title}
-            <MdOutlineDragIndicator className='mr-2 dark:text-white' />
+            <span>
+              {
+                !column.isTitleEdit ? 
+                <>{column.title}</>
+                :
+                <input type="text" placeholder='type column name'
+                  onChange={(e) => setColumnName(e.target.value)}
+                  value={columnName}
+                />
+              }
+
+              <button className='text-sm ml-3' onClick={() => startEditColumnName(column.id)}>
+                {!column.isTitleEdit ? 'edit name' : 'stop edit'}
+              </button>
+
+              {
+                column.isTitleEdit && 
+                <button className='text-sm ml-2 bg-indigo-500 px-2 text-white' onClick={() => saveColumnName(column.id, columnName)}>
+                  save
+                </button>
+              }
+            </span>
+
+            <span>
+              <button onClick={() => removeColumn(column.id)}>remove</button>
+              <MdOutlineDragIndicator className='mr-2 dark:text-white' />
+            </span>
+
           </div>
   
           <StrictModeDroppable droppableId={column.id} type='task'>
@@ -51,7 +92,7 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
                 ${snapshot.isDraggingOver && 'bg-indigo-100 dark:bg-slate-600'}`}
               >
                 <div className='mx-3'>
-                  <TaskWrapper tasks={tasks}/>
+                  <TaskWrapper tasks={tasks} />
 
                   {provided.placeholder}
                 </div>
