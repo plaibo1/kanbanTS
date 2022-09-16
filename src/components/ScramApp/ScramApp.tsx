@@ -1,9 +1,11 @@
 import { FC } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useAppDispatch, useAppSelector } from '../../hook';
-import { addColumnScram, ColumnObjectType, initialStateScramAppType, setScram } from '../../store/scram-reducer';
+import { initialStateScramAppType, setScram } from '../../store/scram-reducer';
+import AddColumnBtn from './AddColumnBtn/AddColumnBtn';
 import ColumnWrapper from './Column/ColumnWrapper';
 import { StrictModeDroppable } from './StrictModeDroppable';
+
 
 const ScramApp: FC = () => {
 
@@ -99,44 +101,42 @@ const ScramApp: FC = () => {
   }
 
 
-  const addColumn = (title: string) => {
-    dispatch(addColumnScram(title))
-  }
-
   return (
     <div className='mt-[100px]'>
 
-      <div className='text-left ml-3 mb-7'>
-        <button
-          onClick={() => addColumn('new column')}
-          className='bg-indigo-500 text-white py-1 px-3 text-sm rounded-md active:scale-95'
-        >
-          + column
-        </button>
-      </div>
+      <AddColumnBtn />
 
       <DragDropContext onDragEnd={onDragEnd}>
 
         {/* === drop area for column === */}
         <StrictModeDroppable droppableId='columnsDroppableArea' direction='horizontal' type='column'>
 
-          {(provided) => (
-            <div 
-              className='w-full flex items-start overflow-auto pb-16' 
-              ref={provided.innerRef} {...provided.droppableProps}
-            >
+          {(provided) => {
 
-              {
-                initialData.columnOrder.map((columnId: string, columnIndex: number) => {
-                  const column = initialData.columns[columnId]
+            console.log(provided.placeholder)
 
-                  return <ColumnWrapper key={column.id} column={column} taskMap={initialData.tasks} columnIndex={columnIndex} />
-                })
-              }
+            return (
+              <div
+                className='scramScroll'
+                ref={provided.innerRef} {...provided.droppableProps}
+              >
+                {
+                  initialData.columnOrder.map((columnId: string, columnIndex: number) => {
+                    const column = initialData.columns[columnId]
 
-              {provided.placeholder}
-            </div>
-          )}
+                    return <ColumnWrapper key={column.id} column={column} taskMap={initialData.tasks} columnIndex={columnIndex} />
+                  })
+                }
+
+                <div>
+                  <div className='bg-slate-100 dark:bg-slate-800 dark:shadow-2xl rounded-xl w-[94%] mx-auto shadow-sm overflow-hidden'>
+                    <div className='w-full bg-slate-200 dark:bg-inherit dark:border-b-slate-900 dark:border-b h-12 -mb-12'></div>
+                    {provided.placeholder}
+                  </div>
+                </div>
+              </div>
+            )
+          }}
 
         </StrictModeDroppable>
 

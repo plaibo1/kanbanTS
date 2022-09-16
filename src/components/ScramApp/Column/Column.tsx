@@ -17,8 +17,9 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
 
   const dispatch = useAppDispatch()
 
-  const addTask = (content:string) => {
-    dispatch(addTaskScram({content}))
+  
+  const addTask = (content:string, columnID:string) => {
+    dispatch(addTaskScram({content, columnID}))
   }
 
   return (
@@ -26,7 +27,8 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
     {
       ((provided) => (
         <div
-          className='bg-slate-50 dark:bg-slate-700 w-[400px] min-w-[400px] mx-3 inline-block rounded-xl relative'
+          className='bg-white dark:bg-slate-700 w-[400px] 
+            min-w-[400px] mx-3 inline-block rounded-xl relative shadow-sm'
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
@@ -60,8 +62,10 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
           </StrictModeDroppable>
   
           <div className='w-full flex justify-center'>
-            <button className='hover:bg-indigo-500 hover:text-white rounded-lg w-[95%] py-2 px-3 my-3 dark:text-white text-left text-sm' 
-              onClick={() => {addTask('task content here')}}>
+            <button 
+              className='hover:bg-indigo-500 hover:text-white rounded-lg w-[95%] py-2 px-3 my-3 dark:text-white text-left text-sm' 
+              onClick={() => {addTask('task content here', column.id)}}
+            >
               + New
             </button>
           </div>

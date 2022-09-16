@@ -61,10 +61,10 @@ const scramSlice = createSlice({
       return state = {...state, ...action.payload}
     },
 
-    addTaskScram(state, action:PayloadAction<{content: string}>) {
+    addTaskScram(state, action:PayloadAction<{content: string, columnID:string}>) {
       const id = 'taskID-' + new Date().toISOString()
       state.tasks[id] = {id, content: action.payload.content}
-      state.columns['column-1'].taskIds.push(id)
+      state.columns[action.payload.columnID].taskIds.push(id)
     },
 
     addColumnScram(state, action:PayloadAction<string>) {

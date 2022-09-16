@@ -20,3 +20,7 @@ code {
 html.dark {
   @apply bg-slate-800
 }
+
+html {
+  @apply bg-slate-50
+}

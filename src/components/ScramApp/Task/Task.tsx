@@ -19,7 +19,7 @@ const Task:FC<TaskType> = ({content, id, index}) => {
         >
           <div className={`${!snapshot.isDragging ? 'shadow-none' : 'shadow-xl scale-105'}
               transition
-             text-slate-600 dark:text-slate-100 rounded-md relative text-left p-3 bg-white dark:bg-slate-500`}>
+             text-slate-600 dark:text-slate-100 rounded-md relative text-left p-3 bg-gray-50 dark:bg-slate-500`}>
 
             {content}
           </div>

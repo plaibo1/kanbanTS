@@ -1,0 +1,17 @@
+.scramScroll {
+  @apply w-full flex items-start overflow-auto pb-16;
+}
+
+.scramScroll::-webkit-scrollbar {
+  height: 7px;
+}
+
+.scramScroll::-webkit-scrollbar-track {
+  @apply bg-slate-200 dark:bg-slate-500;
+  border-radius: 10px;
+}
+
+.scramScroll::-webkit-scrollbar-thumb {
+  @apply bg-slate-400 dark:bg-slate-700;
+  border-radius: 10px;
+}
