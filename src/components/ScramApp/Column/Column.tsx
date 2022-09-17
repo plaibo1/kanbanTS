@@ -6,6 +6,11 @@ import { StrictModeDroppable } from '../StrictModeDroppable'
 import TaskWrapper from '../Task/TaskWrapper'
 
 import {MdOutlineDragIndicator} from 'react-icons/md'
+import { FiEdit2 } from 'react-icons/fi'
+import { BsTrash } from 'react-icons/bs'
+import { IoMdClose } from 'react-icons/io'
+import { BiSave } from 'react-icons/bi'
+
 
 interface ColumnType {
   column: ColumnObjectType
@@ -53,31 +58,47 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
               font-semibold mb-3 py-3 pl-3 border-b dark:border-slate-600' 
             {...provided.dragHandleProps}
           >
-            <span>
+            
+            <span className='flex items-center group-hover:opacity-100 group'>
               {
                 !column.isTitleEdit ? 
                 <>{column.title}</>
                 :
-                <input type="text" placeholder='type column name'
+                <input 
+                  type="text" 
+                  placeholder='type column name'
                   onChange={(e) => setColumnName(e.target.value)}
                   value={columnName}
+                  className='w-[70%] border-b bg-transparent outline-none'
+                  autoFocus
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter" && column.isTitleEdit && columnName.trim().length !== 0) 
+                      saveColumnName(column.id, columnName)
+                  }}
                 />
               }
 
-              <button className='text-sm ml-3' onClick={() => startEditColumnName(column.id)}>
-                {!column.isTitleEdit ? 'edit name' : 'stop edit'}
+              <button className='ml-3 text-lg' onClick={() => startEditColumnName(column.id)}>
+                {!column.isTitleEdit ? <FiEdit2 className='opacity-0 group-hover:opacity-100 transition' /> : <IoMdClose />}
               </button>
 
               {
-                column.isTitleEdit && 
-                <button className='text-sm ml-2 bg-indigo-500 px-2 text-white' onClick={() => saveColumnName(column.id, columnName)}>
-                  save
+                column.isTitleEdit && columnName.trim().length !== 0 &&
+                <button 
+                  className='text-sm ml-2 bg-indigo-500 px-2 text-white' 
+                  onClick={() => saveColumnName(column.id, columnName)}
+                >
+                  <BiSave />
                 </button>
               }
             </span>
 
-            <span>
-              <button onClick={() => removeColumn(column.id)}>remove</button>
+            {/* remove column and drag button */}
+            <span className='flex items-center'>
+              <button onClick={() => removeColumn(column.id)}>
+                <BsTrash className='text-base' />
+              </button>
+
               <MdOutlineDragIndicator className='mr-2 dark:text-white' />
             </span>
 

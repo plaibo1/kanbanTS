@@ -77,7 +77,7 @@ const scramSlice = createSlice({
         id,
         title: action.payload,
         taskIds: [],
-        isTitleEdit: false
+        isTitleEdit: true
       }
       state.columnOrder.push(id)
     },
