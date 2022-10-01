@@ -5,10 +5,11 @@ import Task from './Task'
 
 interface TaskWrapperType {
   tasks: Array<TaskObjectType>
+  columnID: string
 }
 
 const TaskWrapper: FC<TaskWrapperType> = React.memo(
-  ({ tasks }) => {
+  ({ tasks, columnID }) => {
     return (
       <>
         {
@@ -19,6 +20,11 @@ const TaskWrapper: FC<TaskWrapperType> = React.memo(
                 content={task.content}
                 id={task.id}
                 index={index}
+                isContentEdit={task.isContentEdit}
+                columnID={columnID}
+                taskData={task.taskDate}
+                taskTodo={task.taskTodo}
+                isFire={task.isFire}
               />
             )
           })

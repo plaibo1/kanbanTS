@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { useAppDispatch } from '../../../hook'
-import { addColumnScram } from '../../../store/scram-reducer'
+import { useAppDispatch } from '../../../../hook'
+import { addColumnScram } from '../../../../store/scram-reducer'
 
 const AddColumnBtn:FC = () => {
 

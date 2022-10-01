@@ -2,8 +2,9 @@ import { FC } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useAppDispatch, useAppSelector } from '../../hook';
 import { initialStateScramAppType, setScram } from '../../store/scram-reducer';
-import AddColumnBtn from './ColumnBtn/AddColumnBtn';
+import AddColumnBtn from './Column/ColumnButtons/AddColumnBtn';
 import ColumnWrapper from './Column/ColumnWrapper';
+import EditableTask from './EditableTask/EditableTask';
 import { StrictModeDroppable } from './StrictModeDroppable';
 
 
@@ -15,7 +16,6 @@ const ScramApp: FC = () => {
   const setInitialData = (state: initialStateScramAppType) => {
     dispatch(setScram(state))
   }
-
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result
@@ -100,7 +100,6 @@ const ScramApp: FC = () => {
     setInitialData(newState);
   }
 
-
   return (
     <div className='mt-[100px]'>
 
@@ -142,6 +141,12 @@ const ScramApp: FC = () => {
         </StrictModeDroppable>
 
       </DragDropContext>
+
+
+      <EditableTask 
+        editableTask={initialData.editableTask}
+      />
+
     </div>
   )
 }

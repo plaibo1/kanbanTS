@@ -1,15 +1,13 @@
-import {FC, useState} from 'react'
+import {FC} from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { useAppDispatch } from '../../../hook'
-import { addTaskScram, ColumnObjectType, removeColumnScram, saveColumnNameScramApp, startEditColumnNameScramApp, TaskObjectType } from '../../../store/scram-reducer'
+import { ColumnObjectType, TaskObjectType } from '../../../store/scram-reducer'
 import { StrictModeDroppable } from '../StrictModeDroppable'
 import TaskWrapper from '../Task/TaskWrapper'
 
-import {MdOutlineDragIndicator} from 'react-icons/md'
-import { FiEdit2 } from 'react-icons/fi'
-import { BsTrash } from 'react-icons/bs'
-import { IoMdClose } from 'react-icons/io'
-import { BiSave } from 'react-icons/bi'
+
+import AddTaskBtn from './ColumnButtons/AddTaskBtn'
+import ColumnTitle from './ColumnTitle'
+import ColumnSettings from './ColumnSettings'
 
 
 interface ColumnType {
@@ -19,28 +17,6 @@ interface ColumnType {
 }
 
 const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
-
-  const dispatch = useAppDispatch()
-
-  
-  const addTask = (content:string, columnID:string) => {
-    dispatch(addTaskScram({content, columnID}))
-  }
-
-  const removeColumn = (columnID: string) => {
-    dispatch(removeColumnScram(columnID))
-  }
-
-  const startEditColumnName = (columnID:string) => {
-    dispatch(startEditColumnNameScramApp(columnID))
-  }
-
-  const saveColumnName = (columnID:string, columnName:string) => {
-    dispatch(saveColumnNameScramApp({columnID, title:columnName}))
-    dispatch(startEditColumnNameScramApp(columnID))
-  }
-
-  const [columnName, setColumnName] = useState('')
 
   return (
     <Draggable draggableId={column.id} index={columnIndex}>
@@ -53,56 +29,20 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
           {...provided.draggableProps}
         >
   
+          {/* ===== column header ===== */}
           <div 
-            className='text-slate-800 dark:text-slate-50 text-left text-2xl leading-7 flex justify-between items-center
+            className='text-slate-800 dark:text-slate-50 text-left text-lg leading-7 flex justify-between items-center
               font-semibold mb-3 py-3 pl-3 border-b dark:border-slate-600' 
             {...provided.dragHandleProps}
           >
             
-            <span className='flex items-center group-hover:opacity-100 group'>
-              {
-                !column.isTitleEdit ? 
-                <>{column.title}</>
-                :
-                <input 
-                  type="text" 
-                  placeholder='type column name'
-                  onChange={(e) => setColumnName(e.target.value)}
-                  value={columnName}
-                  className='w-[70%] border-b bg-transparent outline-none'
-                  autoFocus
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter" && column.isTitleEdit && columnName.trim().length !== 0) 
-                      saveColumnName(column.id, columnName)
-                  }}
-                />
-              }
+            <ColumnTitle column={column} />
 
-              <button className='ml-3 text-lg' onClick={() => startEditColumnName(column.id)}>
-                {!column.isTitleEdit ? <FiEdit2 className='opacity-0 group-hover:opacity-100 transition' /> : <IoMdClose />}
-              </button>
-
-              {
-                column.isTitleEdit && columnName.trim().length !== 0 &&
-                <button 
-                  className='text-sm ml-2 bg-indigo-500 px-2 text-white' 
-                  onClick={() => saveColumnName(column.id, columnName)}
-                >
-                  <BiSave />
-                </button>
-              }
-            </span>
-
-            {/* remove column and drag button */}
-            <span className='flex items-center'>
-              <button onClick={() => removeColumn(column.id)}>
-                <BsTrash className='text-base' />
-              </button>
-
-              <MdOutlineDragIndicator className='mr-2 dark:text-white' />
-            </span>
+            {/* column header right side */}
+            <ColumnSettings column={column} />
 
           </div>
+
   
           <StrictModeDroppable droppableId={column.id} type='task'>
   
@@ -113,24 +53,16 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
                 ${snapshot.isDraggingOver && 'bg-indigo-100 dark:bg-slate-600'}`}
               >
                 <div className='mx-3'>
-                  <TaskWrapper tasks={tasks} />
+                  <TaskWrapper tasks={tasks} columnID={column.id}/>
 
                   {provided.placeholder}
                 </div>
-
               </div>
             )}
   
           </StrictModeDroppable>
-  
-          <div className='w-full flex justify-center'>
-            <button 
-              className='hover:bg-indigo-500 hover:text-white rounded-lg w-[95%] py-2 px-3 my-3 dark:text-white text-left text-sm' 
-              onClick={() => {addTask('task content here', column.id)}}
-            >
-              + New
-            </button>
-          </div>
+
+          <AddTaskBtn columnID={column.id} />
 
         </div>
         ))

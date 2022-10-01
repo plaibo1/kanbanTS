@@ -1,5 +1,4 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import todoReducer from "./todo-reducer";
 import scramReducer from "./scram-reducer";
 
 import storage from 'redux-persist/lib/storage'
@@ -19,11 +18,10 @@ import {
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['scramApp']
+  blacklist: ['scramApp']
 }
 
 const rootReducer = combineReducers({
-  todoPage: todoReducer,
   scramApp: scramReducer
 })
 
