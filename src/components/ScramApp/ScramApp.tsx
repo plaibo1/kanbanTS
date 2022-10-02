@@ -99,6 +99,7 @@ const ScramApp: FC = () => {
 
     setInitialData(newState);
   }
+  
 
   return (
     <div className='mt-[100px]'>

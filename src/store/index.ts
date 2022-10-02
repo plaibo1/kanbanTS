@@ -18,7 +18,7 @@ import {
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['scramApp']
+  whitelist: ['scramApp']
 }
 
 const rootReducer = combineReducers({

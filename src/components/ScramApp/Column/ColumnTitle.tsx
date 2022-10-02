@@ -4,7 +4,7 @@ import { ColumnObjectType, saveColumnNameScramApp, startEditColumnNameScramApp }
 
 import { FiEdit2 } from 'react-icons/fi'
 import { BiSave } from 'react-icons/bi'
-import { IoMdClose } from 'react-icons/io'
+import { RiCloseFill } from 'react-icons/ri'
 
 interface ColumnTitleType {
   column: ColumnObjectType
@@ -45,19 +45,24 @@ const ColumnTitle:FC<ColumnTitleType> = ({column}) => {
           />
       }
 
-      <button className='ml-3 text-lg' onClick={() => startEditColumnName(column.id)}>
-        {!column.isTitleEdit ? <FiEdit2 className='opacity-0 group-hover:opacity-100 transition' /> : <IoMdClose />}
-      </button>
-
       {
         column.isTitleEdit && columnName.trim().length !== 0 &&
         <button
-          className='text-sm ml-2 bg-indigo-500 px-2 text-white'
+          className='text-sm ml-3 bg-indigo-500 w-7 h-7 text-white rounded-md'
           onClick={() => saveColumnName(column.id, columnName)}
         >
-          <BiSave />
+          <BiSave className='m-auto' />
         </button>
       }
+
+      <button className={`ml-2 w-7 h-7 flex rounded-md ${column.isTitleEdit && 'bg-red-500'}`} onClick={() => startEditColumnName(column.id)}>
+        {
+          !column.isTitleEdit ? 
+            <FiEdit2 className='opacity-0 group-hover:opacity-100 transition m-auto' /> 
+            : 
+            <RiCloseFill className='m-auto text-white' />
+        }
+      </button>
     </span>
   )
 }

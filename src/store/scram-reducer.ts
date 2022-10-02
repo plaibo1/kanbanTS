@@ -99,10 +99,19 @@ const scramSlice = createSlice({
     addTaskScram(state, action:PayloadAction<{columnID:string}>) {
       const id = 'taskID-' + new Date().toISOString()
 
-      const dateNow = new Date().toISOString().split('T')
+      const dateNow = new Date
+      const addZeroToDate = (dateElem: number) => {
+        if (dateElem.toString().length === 1) return '0' + dateElem.toString()
+        return dateElem.toString()
+      }
 
-      const dateDMY = dateNow[0].split('-').join('.') // dd/mm/yy
-      const dateTime = dateNow[1].slice(0, 5); // time hh/mm
+      
+      const dateDMY = addZeroToDate(dateNow.getDate()) + 
+        '.' + addZeroToDate(dateNow.getMonth() + 1) + 
+        '.' + addZeroToDate(dateNow.getFullYear())
+
+      const dateTime = addZeroToDate(dateNow.getHours()) + ':' + addZeroToDate(dateNow.getMinutes())
+    
 
       state.tasks[id] = {
         id, 

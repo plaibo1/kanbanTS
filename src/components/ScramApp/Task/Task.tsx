@@ -64,21 +64,25 @@ const Task:FC<TaskType> = ({content, id, index, isContentEdit, columnID, taskDat
                   onChange={(e) => setTaskContent(e.target.value)}
                   value={taskContent}
                   autoFocus
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter" && isContentEdit && taskContent.trim().length !== 0)
+                      editTask(id, taskContent)
+                  }}
                 />
 
                 {
-                  taskContent.length !== 0 &&
+                  taskContent.trim().length !== 0 &&
                   <button
                     onClick={() => editTask(id, taskContent)} 
-                    className='ml-2 px-2 bg-indigo-500 rounded-md shadow-md'
+                    className='ml-2 px-2 bg-indigo-500 rounded-md shadow-md text-slate-100'
                   >
                     <BiCheck />
-                </button>
+                  </button>
                 }
 
                 <button
                   onClick={() => toggleEditTask(id)} 
-                  className='ml-2 px-2 bg-red-500 rounded-md shadow-md'
+                  className='ml-2 px-2 bg-red-500 rounded-md shadow-md text-slate-100'
                 >
                   <RiCloseFill />
                 </button>
@@ -87,23 +91,28 @@ const Task:FC<TaskType> = ({content, id, index, isContentEdit, columnID, taskDat
               <div className='flex justify-between items-center'>
 
                 <div className='text-2xl font-bold w-full'>
-                  <div className='border-b mb-3 pb-2 text-slate-800 dark:text-slate-50 dark:border-b-slate-400 flex items-center'>
+                  <div className='border-b mb-3 pb-2 text-slate-800 
+                    dark:text-slate-50 dark:border-b-slate-400 flex items-center max-w-[300px]'
+                  >
                     {content}
                     {isFire && <HiFire className='ml-3 -mb-1 text-[#ff4c4c]' />}
                   </div>
                   
-                  <div className='flex justify-between'>
+                  <div className='flex justify-between items-end'>
                     <span className='text-xs font-semibold'>
                       <div className='flex items-center'><BiTime className='mr-1'/>{taskData.dateTime}</div>
                       <div className='flex items-center'><AiOutlineCalendar className='mr-1' />{taskData.dateDMY}</div>
                     </span>
+                    {taskTodo.length !== 0 && <span className='text-sm mr-4 font-semibold'>
+                      Todo: <span className='font-bold'>{taskTodo.length}</span> 
+                    </span>}
                   </div>
                 </div>
 
                 {/* edit task input */}
                 <span className='flex flex-col h-full justify-between' >
                   <button 
-                    className='ml-2 mb-[2px] opacity-0 group-hover:opacity-100 transition
+                    className='ml-2 mb-[2px] opacity-1 lg:opacity-0 group-hover:opacity-100 transition
                       hover:bg-indigo-500 hover:text-white p-[6px] rounded-md'
                     onClick={() => toggleEditTask(id)}
                   >
@@ -111,7 +120,7 @@ const Task:FC<TaskType> = ({content, id, index, isContentEdit, columnID, taskDat
                   </button>
 
                   <button 
-                    className='ml-2 mb-[2px] opacity-0 group-hover:opacity-100 transition
+                    className='ml-2 mb-[2px] opacity-1 lg:opacity-0 group-hover:opacity-100 transition
                       hover:bg-indigo-500 hover:text-white p-[6px] rounded-md'
                     onClick={() => setTaskSettingsEdit(id)}
                   >
@@ -119,7 +128,7 @@ const Task:FC<TaskType> = ({content, id, index, isContentEdit, columnID, taskDat
                   </button>
 
                   <button 
-                    className='ml-2 opacity-0 group-hover:opacity-100 transition 
+                    className='ml-2 opacity-1 lg:opacity-0 group-hover:opacity-100 transition 
                       hover:bg-indigo-500 hover:text-white p-[6px] rounded-md'
                     onClick={() => removeTask(id, columnID)}
                   >

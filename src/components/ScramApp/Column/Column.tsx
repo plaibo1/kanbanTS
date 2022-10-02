@@ -32,7 +32,7 @@ const Column:FC <ColumnType> = ({ column, tasks, columnIndex }) => {
           {/* ===== column header ===== */}
           <div 
             className='text-slate-800 dark:text-slate-50 text-left text-lg leading-7 flex justify-between items-center
-              font-semibold mb-3 py-3 pl-3 border-b dark:border-slate-600' 
+              font-semibold mb-3 py-3 px-3 border-b dark:border-slate-600' 
             {...provided.dragHandleProps}
           >
             

@@ -53,8 +53,8 @@ const EditableTask: FC<{ editableTask: editableTaskType }> = ({ editableTask }) 
           <motion.div
             onClick={(e) => e.stopPropagation()}
 
-            className='w-[600px] min-h-[500px] absolute left-1/2 top-1/2
-              bg-white dark:bg-slate-700 p-10 rounded-lg shadow-md dark:shadow-lg'
+            className='w-[93%] sm:w-[600px] min-h-[520px] absolute left-1/2 top-1/2
+              bg-white dark:bg-slate-700 px-5 py-8 sm:p-10 rounded-lg shadow-md dark:shadow-lg'
 
             initial={{translateY: '-100%', translateX: '-50%'}}
             animate={{translateY: '-50%'}}
@@ -67,11 +67,14 @@ const EditableTask: FC<{ editableTask: editableTaskType }> = ({ editableTask }) 
                   {editableTask.task.content}
                 </span>
                 <label 
-                  className={`w-[45px] h-[25px] rounded-xl border-2 ml-4 -mb-3 flex items-center 
-                  cursor-pointer hover:bg-indigo-500 hover:border-indigo-500 dark:border
-                  ${editableTask.task.isFire ? 'border-[#ff4c4c] justify-end' : ''} `}
+                  className={`w-[45px] h-[25px] rounded-xl border-2 ml-4 -mb-3 flex items-center relative
+                  cursor-pointer hover:bg-indigo-500 hover:border-indigo-500 transition
+                  ${editableTask.task.isFire ? 'border-[#ff4c4c]' : 'border-slate-300 '} `}
                 >
-                  <HiFire className={`${editableTask.task.isFire ? 'text-[#ff4c4c]' : 'text-slate-200'}  mx-1`} />
+                  <HiFire className={`
+                    ${editableTask.task.isFire ? 'text-[#ff4c4c] left-[22px]' : 'text-slate-300 left-1'}
+                    absolute transition-all`
+                  } />
                   <input
                     type="checkbox"
                     onChange={(e) => setFire(
@@ -90,7 +93,7 @@ const EditableTask: FC<{ editableTask: editableTaskType }> = ({ editableTask }) 
               <div className='flex items-center ml-3'><AiOutlineCalendar className='mr-1' />{editableTask.task.taskDate.dateDMY}</div>
             </span>
 
-            <div className='text-base font-semibold text-slate-300'>Todo</div>
+            <div className='text-base font-semibold mb-3 text-slate-300'>Todo</div>
 
             <TodoApp
               todosList={editableTask.task.taskTodo}
